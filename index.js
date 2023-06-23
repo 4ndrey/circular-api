@@ -16,7 +16,7 @@ app.post('/watch/:key', async (req, res) => {
   } else {
     const item = await db.collection(col).set(key, req.body)
     console.log(JSON.stringify(item, null, 2))
-    res.json(item).end()
+    res.status(200).end()
   }
 })
 
@@ -35,12 +35,12 @@ app.get('/watch/:key', async (req, res) => {
   console.log(`from collection: ${col} get key: ${key} with params ${JSON.stringify(req.params)}`)
   const item = await db.collection(col).get(key)
   console.log(JSON.stringify(item, null, 2))
-  res.json(item).end()
+  res.json(item).props.end()
 })
 
 // Get a full listing
 app.get('/watch', async (req, res) => {
-  const col = req.params.col
+  const col = 'watch'
   const items = await db.collection(col).list()
   res.json(items).end()
 })
