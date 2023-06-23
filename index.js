@@ -35,7 +35,7 @@ app.get('/watch/:key', async (req, res) => {
   console.log(`from collection: ${col} get key: ${key} with params ${JSON.stringify(req.params)}`)
   const item = await db.collection(col).get(key)
   console.log(JSON.stringify(item, null, 2))
-  res.json(item).props.end()
+  res.json(item.props).end()
 })
 
 // Get a full listing
