@@ -37,7 +37,10 @@ app.get('/watch/:key', async (req, res) => {
   if (item == null) {
     res.status(404).end()
   } else {
-    res.json(item.props).end()
+    var json = item.props
+    delete json.updated
+    delete json.created
+    res.json(json).end()
   }
 })
 
