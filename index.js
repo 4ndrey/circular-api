@@ -22,6 +22,8 @@ app.post('/watch/:key', async (req, res) => {
 // Pair a watch
 app.post('/watch/pair', async (req, res) => {
   console.log(req.headers)
+  console.log(req)
+  console.log('hello')
 
   const col = 'watch'
   const id = req.headers['id']
