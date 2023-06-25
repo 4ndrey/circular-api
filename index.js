@@ -20,6 +20,32 @@ app.post('/watch/:key', async (req, res) => {
   }
 })
 
+// Pair a watch
+app.post('/watch/pair', async (req, res) => {
+  console.log(req.headers)
+
+  const col = 'watch'
+  const id = req.headers['id']
+  const userId = req.headers['userId']
+  var item = db.collection(col).get(id)
+  item['user'] = userId
+  db.collection(col).set(id, item)
+  res.status(200).end()
+})
+
+// Make a note
+app.post('/watch/note', async (req, res) => {
+  console.log(req.headers)
+
+  const col = 'watch'
+  const note = req.headers['note']
+  const userId = req.headers['userId']
+  var item = (await db.collection(col).find('user', userId)).results[0]
+  item['note'] = note
+  db.collection(col).set(id, item)
+  res.status(200).end()
+})
+
 // Delete an item
 app.delete('/watch/:key', async (req, res) => {
   const col = 'watch'
