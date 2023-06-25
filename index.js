@@ -21,16 +21,16 @@ app.post('/watch/:key', async (req, res) => {
 
 // Pair a watch
 app.post('/watch/pair', async (req, res) => {
-  console.log(req.headers)
-  console.log(req)
   console.log('hello')
+  console.log(req)
+  console.log(req.headers)
 
   const col = 'watch'
-  const id = req.headers['id']
-  const userId = req.headers['userid']
+  const id = req.headers.id
+  const userId = req.headers.userid
   console.log(`id: ${id} userid: ${userId}`)
   var item = db.collection(col).get(id).props
-  item['user'] = userId
+  item.user = userId
   await db.collection(col).set(id, item)
   res.status(200).end()
 })
@@ -40,10 +40,10 @@ app.post('/watch/note', async (req, res) => {
   console.log(req.headers)
 
   const col = 'watch'
-  const note = req.headers['note']
-  const userId = req.headers['userid']
+  const note = req.headers.note
+  const userId = req.headers.userid
   var item = (await db.collection(col).find('user', userId)).results[0]
-  item['note'] = note
+  item.note = note
   res.status(200).end()
 })
 
