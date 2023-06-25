@@ -15,7 +15,6 @@ app.post('/watch/:key', async (req, res) => {
     res.status(400).end()
   } else {
     const item = await db.collection(col).set(key, req.body)
-    console.log(JSON.stringify(item, null, 2))
     res.status(200).end()
   }
 })
@@ -27,9 +26,9 @@ app.post('/watch/pair', async (req, res) => {
   const col = 'watch'
   const id = req.headers['id']
   const userId = req.headers['userId']
-  var item = db.collection(col).get(id)
+  var item = db.collection(col).get(id).props
   item['user'] = userId
-  db.collection(col).set(id, item)
+  await db.collection(col).set(id, item)
   res.status(200).end()
 })
 
@@ -42,7 +41,6 @@ app.post('/watch/note', async (req, res) => {
   const userId = req.headers['userId']
   var item = (await db.collection(col).find('user', userId)).results[0]
   item['note'] = note
-  db.collection(col).set(id, item)
   res.status(200).end()
 })
 
