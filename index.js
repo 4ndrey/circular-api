@@ -70,6 +70,13 @@ app.get('/watch', async (req, res) => {
   res.json(items).end()
 })
 
+// Get a full listing users
+app.get('/users', async (req, res) => {
+  const col = 'users'
+  const items = await db.collection(col).list()
+  res.json(items).end()
+})
+
 // Catch all handler for all other request.
 app.use('*', (req, res) => {
   res.status(204).end()
