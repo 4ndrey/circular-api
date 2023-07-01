@@ -9,29 +9,23 @@ app.use(express.urlencoded({ extended: true }))
 app.post('/watch/:key', async (req, res) => {
   console.log(req.body)
 
-  const col = 'watch'
   const key = req.params.key
   if (key == null) {
     res.status(400).end()
   } else {
-    const item = await db.collection(col).set(key, req.body)
+    const item = await db.collection('watch').set(key, req.body)
     res.status(200).end()
   }
 })
 
 // Pair a watch
 app.post('/watch/pair', async (req, res) => {
-  console.log('hello')
   console.log(req)
-  console.log(req.headers)
 
-  const col = 'watch'
-  const id = req.headers.id
+  const watchId = req.headers.id
   const userId = req.headers.userid
-  console.log(`id: ${id} userid: ${userId}`)
-  var item = db.collection(col).get(id).props
-  item.user = userId
-  await db.collection(col).set(id, item)
+  console.log(`watchId: ${watchId} userid: ${userId}`)
+  const item = db.collection('users').set(userId, {watchId})
   res.status(200).end()
 })
 
@@ -42,8 +36,8 @@ app.post('/watch/note', async (req, res) => {
   const col = 'watch'
   const note = req.headers.note
   const userId = req.headers.userid
-  var item = (await db.collection(col).find('user', userId)).results[0]
-  item.note = note
+  const user = await db.collection('users').get(userId);
+  const updated = await db.collection('watch').set(user.watchId, {note})
   res.status(200).end()
 })
 
@@ -57,10 +51,8 @@ app.delete('/watch/:key', async (req, res) => {
 
 // Get a single item
 app.get('/watch/:key', async (req, res) => {
-  const col = 'watch'
   const key = req.params.key
-  console.log(`from collection: ${col} get key: ${key} with params ${JSON.stringify(req.params)}`)
-  const item = await db.collection(col).get(key)
+  const item = await db.collection('watch').get(key)
   if (item == null) {
     res.status(404).end()
   } else {
